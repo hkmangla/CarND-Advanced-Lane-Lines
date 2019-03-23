@@ -1,0 +1,10 @@
+camera_cal_output/*
+calibrated_test_images/*
+gradient_test_images/*
+laneDetected_test_images/*
+warped_test_images/*
+*.zip
+example_writeup.pdf
+*.sh
+*.pyc
+.DS_Store
