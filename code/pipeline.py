@@ -41,12 +41,19 @@ class AdvancedLaneDetection ():
         output_image = self.map_lane(image, undist_image, warped_image,
                             left_fitx, right_fitx, ploty, M_inv)
 
+        # print(warped_image.shape)
+        # warped_image = cv2.resize(warped_image,(640,360))
+        # warped_image = np.hstack((warped_image, warped_image))
+        # print(warped_image.shape)
+        warped_image_3d = np.zeros_like(output_image)
+        warped_image_3d[:, :, 0] = warped_image
+        output_image = np.vstack((warped_image_3d, output_image))
         if (self.frame_count%10 == 0):
             self.left_rc, self.right_rc = self.laneDetect.get_curvature(ploty)
             self.vehicle_position_text = self.laneDetect.get_vehicle_position_text()
 
-        output_image = self.put_text(output_image, 'Curvature: {0:.2f}m'.format(round((self.left_rc+self.right_rc)/2,2)), (25, 100))            
-        output_image = self.put_text(output_image, 'Vehicle Position: ' + self.vehicle_position_text, (25, 150))            
+        output_image = self.put_text(output_image, 'Curvature: {0:.2f}m'.format(round((self.left_rc+self.right_rc)/2,2)), (25, 800))            
+        output_image = self.put_text(output_image, 'Vehicle Position: ' + self.vehicle_position_text, (25, 850))            
         self.frame_count += 1
         return output_image
 
@@ -85,8 +92,17 @@ class AdvancedLaneDetection ():
 
 advancedLaneDetection = AdvancedLaneDetection()
 
-project_video_output_fname = '../output_video/project_video_output.mp4'
-project_video = VideoFileClip("../project_video.mp4")
+project_video_output_fname = '../output_video/project_video_output1.mp4'
+project_video = VideoFileClip("../project_video.mp4").subclip(10, 30)
 
 project_video_output = project_video.fl_image(advancedLaneDetection.pipeline)
 project_video_output.write_videofile(project_video_output_fname, audio=False)
+
+# image = cv2.imread('../calibrated_test_images/test1.jpg')
+
+# output_image = advancedLaneDetection.pipeline(image)
+
+# import matplotlib.pyplot as plt
+# print(output_image.shape)
+# plt.imshow(output_image)
+# plt.show()

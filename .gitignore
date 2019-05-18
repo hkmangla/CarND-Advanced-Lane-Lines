@@ -4,6 +4,7 @@ gradient_test_images/*
 laneDetected_test_images/*
 warped_test_images/*
 *.zip
+*.mp4
 example_writeup.pdf
 *.sh
 *.pyc
